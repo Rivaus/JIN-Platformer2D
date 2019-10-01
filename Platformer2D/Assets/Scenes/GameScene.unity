@@ -311,6 +311,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8162eb8ec09d3934e99bd4483b729731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layerPlatform:
+    serializedVersion: 2
+    m_Bits: 1024
   gravity: 20
   walkSpeed: 10
   walkAcceleration: 50
@@ -331,7 +334,7 @@ GameObject:
   - component: {fileID: 1395518471}
   - component: {fileID: 1395518470}
   - component: {fileID: 1395518469}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -435,7 +438,7 @@ GameObject:
   - component: {fileID: 2019086547}
   - component: {fileID: 2019086546}
   - component: {fileID: 2019086545}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

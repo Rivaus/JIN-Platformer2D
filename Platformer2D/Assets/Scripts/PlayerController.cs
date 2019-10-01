@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded = false;
 
     [SerializeField]
+    private LayerMask layerPlatform;
+    [SerializeField]
     float gravity;
     [SerializeField]
     float walkSpeed;
@@ -32,6 +34,7 @@ public class PlayerController : MonoBehaviour
     float jumpForce;
 
     Collider2D[] hits;
+    private bool jaiCognerLaTete = false;
 
     private void Start()
     {
@@ -65,7 +68,7 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             velocity.y = 0;
-           
+            jaiCognerLaTete = false;
             if (Input.GetButtonDown("Jump"))
             {
                 Jump();
@@ -78,9 +81,19 @@ public class PlayerController : MonoBehaviour
             velocity.y += - gravity * Time.deltaTime;
         }
 
+        if (!jaiCognerLaTete)
+        {
+            RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position + boxCollider.size / 2, Vector2.up, 0.1f, layerPlatform);
+            if (hit.collider != null)
+            {
+                velocity.y = 0.0f;
+                jaiCognerLaTete = true;
+            }
+            
+        }
+        
         float moveInput = Input.GetAxisRaw("Horizontal");
         velocity.x = Mathf.MoveTowards(velocity.x, speed * moveInput, acceleration * Time.deltaTime);
-
     }
 
     //precondition le joueur a appuyé sur Jump et isGrounded
