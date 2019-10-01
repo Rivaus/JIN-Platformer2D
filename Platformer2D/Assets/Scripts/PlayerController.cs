@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     float jumpForce;
+    [SerializeField]
+    float jumpBufferTime;
 
     Collider2D[] hits;
     private bool jaiCognerLaTete = false;
@@ -47,8 +49,6 @@ public class PlayerController : MonoBehaviour
         ComputeMovment();
         transform.Translate(velocity * Time.deltaTime);
         ComputeCollisions();
-
-       
     }
 
     void ComputeMovment()
@@ -63,7 +63,6 @@ public class PlayerController : MonoBehaviour
             speed = walkSpeed;
             acceleration = walkAcceleration;
         }
-
 
         if (isGrounded)
         {
@@ -90,6 +89,11 @@ public class PlayerController : MonoBehaviour
                 jaiCognerLaTete = true;
             }
             
+        }
+
+        if (Input.GetButtonUp("Jump"))
+        {
+            velocity.y *= 0.5f;
         }
         
         float moveInput = Input.GetAxisRaw("Horizontal");

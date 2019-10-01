@@ -314,14 +314,14 @@ MonoBehaviour:
   layerPlatform:
     serializedVersion: 2
     m_Bits: 1024
-  gravity: 20
+  gravity: 35
   walkSpeed: 10
   walkAcceleration: 50
   runSpeed: 15
   runAcceleration: 60
   airSpeed: 5
   airAcceleration: 30
-  jumpForce: 12
+  jumpForce: 16
 --- !u!1 &1395518468
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,7 +339,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!61 &1395518469
 BoxCollider2D:
@@ -443,7 +443,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!61 &2019086545
 BoxCollider2D:
@@ -524,7 +524,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2019086544}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: -1.08, z: 0}
+  m_LocalPosition: {x: -3.42, y: -1.08, z: 0}
   m_LocalScale: {x: 9.376367, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
