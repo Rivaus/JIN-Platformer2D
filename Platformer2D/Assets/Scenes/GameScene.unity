@@ -322,6 +322,7 @@ MonoBehaviour:
   airSpeed: 5
   airAcceleration: 30
   jumpForce: 16
+  jumpDistanceTolerance: 0.9
 --- !u!1 &1395518468
 GameObject:
   m_ObjectHideFlags: 0

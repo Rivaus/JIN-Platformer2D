@@ -33,7 +33,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     float jumpForce;
     [SerializeField]
-    float jumpBufferTime;
+    float jumpDistanceTolerance;
+    bool wantToJump = false;
 
     Collider2D[] hits;
     private bool jaiCognerLaTete = false;
@@ -68,9 +69,10 @@ public class PlayerController : MonoBehaviour
         {
             velocity.y = 0;
             jaiCognerLaTete = false;
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump") || wantToJump)
             {
                 Jump();
+                wantToJump = false;
             }
         } else
         {
@@ -78,6 +80,15 @@ public class PlayerController : MonoBehaviour
             acceleration = airAcceleration;
             Debug.Log("Je suis en l'air");
             velocity.y += - gravity * Time.deltaTime;
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position - boxCollider.size / 2, -Vector2.up, jumpDistanceTolerance, layerPlatform);
+                if (hit.collider != null)
+                {
+                    wantToJump = true;
+                }
+            }
         }
 
         if (!jaiCognerLaTete)
