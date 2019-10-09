@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private float speed;
     private float acceleration;
     private bool isGrounded = false;
+    private bool doubleJumpUsed = false;
 
     [SerializeField]
     private LayerMask layerPlatform;
@@ -80,8 +81,13 @@ public class PlayerController : MonoBehaviour
             acceleration = airAcceleration;
             Debug.Log("Je suis en l'air");
             velocity.y += - gravity * Time.deltaTime;
-
-            if (Input.GetButtonDown("Jump"))
+            //DOUBLE JUMP !!
+            if(Input.GetButtonDown("Jump") && !doubleJumpUsed)
+            {
+                Jump();
+                doubleJumpUsed = true;
+            } //Want to jump but isnt grounded, allow a bit of time to jump a bit after.
+            else if (Input.GetButtonDown("Jump") && doubleJumpUsed)
             {
                 RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position - boxCollider.size / 2, -Vector2.up, jumpDistanceTolerance, layerPlatform);
                 if (hit.collider != null)
@@ -116,7 +122,7 @@ public class PlayerController : MonoBehaviour
     {
         velocity.y = jumpForce;
     }
-
+    //la dedans il y a le test de si on touche le sol
     void ComputeCollisions()
     {
         hits = Physics2D.OverlapBoxAll(transform.position, boxCollider.size, 0);
@@ -136,6 +142,7 @@ public class PlayerController : MonoBehaviour
                 if(Vector2.Angle(colliderDistance.normal, Vector2.up) < 90)
                 {
                     isGrounded = true;
+                    doubleJumpUsed = false;
                 }
             }
         }
