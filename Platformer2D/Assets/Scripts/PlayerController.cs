@@ -4,18 +4,30 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    BoxCollider2D boxCollider;
-    Vector2 velocity;
-
+   
+    // Variable d'états
     private float speed;
     private float acceleration;
     private bool isGrounded = false;
     private bool doubleJumpUsed = false;
+    private bool wantToJump = false;
+    private bool jaiCognerLaTete = false;
 
+    [Header("Collision et gravité")]
     [SerializeField]
     private LayerMask layerPlatform;
     [SerializeField]
     float gravity;
+
+    BoxCollider2D boxCollider;
+    Vector2 velocity;
+    Collider2D[] hits;
+  
+
+
+
+    [Space]
+    [Header("Mouvement")]
     [SerializeField]
     float walkSpeed;
     [SerializeField]
@@ -31,15 +43,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     float airAcceleration;
 
+    [Header("Saut")]
     [SerializeField]
     float jumpForce;
     [SerializeField]
     float jumpDistanceTolerance;
-    bool wantToJump = false;
+   
 
-    Collider2D[] hits;
-    private bool jaiCognerLaTete = false;
-
+  
     private void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
@@ -55,6 +66,7 @@ public class PlayerController : MonoBehaviour
 
     void ComputeMovment()
     {
+        //Gestion de la vitesse en fonction de l'état
         if (Input.GetAxisRaw("Run") > 0)
         {
             speed = runSpeed;
@@ -79,8 +91,9 @@ public class PlayerController : MonoBehaviour
         {
             speed = airSpeed;
             acceleration = airAcceleration;
-            Debug.Log("Je suis en l'air");
-            velocity.y += - gravity * Time.deltaTime;
+            
+            velocity.y += - gravity * Time.deltaTime; 
+
             //DOUBLE JUMP !!
             if(Input.GetButtonDown("Jump") && !doubleJumpUsed)
             {
@@ -97,6 +110,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        //Permet la gestion des plafonds
         if (!jaiCognerLaTete)
         {
             RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position + boxCollider.size / 2, Vector2.up, 0.1f, layerPlatform);
@@ -122,6 +136,7 @@ public class PlayerController : MonoBehaviour
     {
         velocity.y = jumpForce;
     }
+
     //la dedans il y a le test de si on touche le sol
     void ComputeCollisions()
     {
@@ -131,14 +146,15 @@ public class PlayerController : MonoBehaviour
 
         foreach (Collider2D hit in hits)
         {
-            if (hit == boxCollider) { continue; } // On détecte forcement uen collision avec notre propre collider;
+            if (hit == boxCollider) { continue; } // On détecte forcement une collision avec notre propre collider;
 
             ColliderDistance2D colliderDistance = hit.Distance(boxCollider);
 
             if (colliderDistance.isOverlapped)
             {
                 transform.Translate(colliderDistance.pointA - colliderDistance.pointB);
-                
+               
+
                 if(Vector2.Angle(colliderDistance.normal, Vector2.up) < 90)
                 {
                     isGrounded = true;
