@@ -11,7 +11,11 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded = false;
     private bool doubleJumpUsed = false;
     private bool wantToJump = false;
+    private bool isWallJumping = false;
+    private bool contactWithRightWall = false;
+    private bool contactWithLeftWall = false;
     private bool jaiCognerLaTete = false;
+
 
     [Header("Collision et gravité")]
     [SerializeField]
@@ -48,6 +52,10 @@ public class PlayerController : MonoBehaviour
     float jumpForce;
     [SerializeField]
     float jumpDistanceTolerance;
+    [SerializeField]
+    float wallJumpXFactor;
+    [SerializeField]
+    float wallJumpYFactor;
    
 
   
@@ -82,6 +90,8 @@ public class PlayerController : MonoBehaviour
         {
             velocity.y = 0;
             jaiCognerLaTete = false;
+            isWallJumping = false;
+
             if (Input.GetButtonDown("Jump") || wantToJump)
             {
                 Jump();
@@ -92,14 +102,14 @@ public class PlayerController : MonoBehaviour
             speed = airSpeed;
             acceleration = airAcceleration;
             
-            velocity.y += - gravity * Time.deltaTime; 
+            velocity.y += - gravity * Time.deltaTime;
 
-            //DOUBLE JUMP !!
-            if(Input.GetButtonDown("Jump") && !doubleJumpUsed)
+            if (Input.GetButtonDown("Jump") && isWallJumping)
             {
-                Jump();
-                doubleJumpUsed = true;
-            } //Want to jump but isnt grounded, allow a bit of time to jump a bit after.
+                WallJump();
+                isWallJumping = false;
+            }
+            //Want to jump but isnt grounded, allow a bit of time to jump a bit after.
             else if (Input.GetButtonDown("Jump") && doubleJumpUsed)
             {
                 RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position - boxCollider.size / 2, -Vector2.up, jumpDistanceTolerance, layerPlatform);
@@ -107,6 +117,12 @@ public class PlayerController : MonoBehaviour
                 {
                     wantToJump = true;
                 }
+            } // Double jump
+            else if (Input.GetButtonDown("Jump") && !doubleJumpUsed && !wantToJump)
+            {
+                Jump();
+                doubleJumpUsed = true;
+                isWallJumping = false;
             }
         }
 
@@ -137,6 +153,21 @@ public class PlayerController : MonoBehaviour
         velocity.y = jumpForce;
     }
 
+    void WallJump()
+    {
+
+        if (contactWithLeftWall) // Quand on wall jump, c'est forcément sur le côté, sinon, on pourrait monter à l'infini    
+        {
+            velocity.y = jumpForce * wallJumpYFactor;
+            velocity.x = speed * wallJumpXFactor;
+        }
+        else if (contactWithRightWall)
+        {
+            velocity.y = jumpForce * wallJumpYFactor;
+            velocity.x = -speed * wallJumpXFactor;
+        }
+    }
+
     //la dedans il y a le test de si on touche le sol
     void ComputeCollisions()
     {
@@ -154,13 +185,37 @@ public class PlayerController : MonoBehaviour
             {
                 transform.Translate(colliderDistance.pointA - colliderDistance.pointB);
                
-
                 if(Vector2.Angle(colliderDistance.normal, Vector2.up) < 90)
                 {
                     isGrounded = true;
                     doubleJumpUsed = false;
                 }
+
+                if (hit.gameObject.CompareTag("Wall"))
+                {
+                    isWallJumping = true;
+                    velocity.x = 0;
+                }
             }
+        }
+
+        // On regarde si on touche les murs sur le côté
+        RaycastHit2D wallHit = Physics2D.Raycast((Vector2)transform.position - boxCollider.size / 2, Vector2.left, 1f, layerPlatform);
+        if (wallHit.collider != null)
+        {
+            contactWithLeftWall = true;
+        } else
+        {
+            contactWithLeftWall = false;
+        }
+        wallHit = Physics2D.Raycast((Vector2)transform.position + boxCollider.size / 2, Vector2.right, 1f, layerPlatform);
+        if (wallHit.collider != null)
+        {
+            contactWithRightWall = true;
+        }
+        else
+        {
+            contactWithRightWall = false;
         }
     }
 }
