@@ -173,6 +173,8 @@ public class PlayerController : MonoBehaviour
         velocity.y = jumpForce;
     }
 
+
+
     void WallJump()
     {
 
@@ -188,6 +190,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     //la dedans il y a le test de si on touche le sol
     void ComputeCollisions()
     {
@@ -197,6 +200,7 @@ public class PlayerController : MonoBehaviour
 
         isGrounded = false;
 
+        // Gère les collisions avec le sol et les murs
         foreach (Collider2D hit in hits)
         {
             if (hit == boxCollider) { continue; } // On détecte forcement une collision avec notre propre collider;
@@ -226,6 +230,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        // Gère le temps de vol
         if (!isGrounded)
         {
             jumpTime += Time.deltaTime;
@@ -252,6 +257,17 @@ public class PlayerController : MonoBehaviour
         else
         {
             contactWithRightWall = false;
+        }
+
+        //On regarde si on est sur une platforme particulière;
+
+        RaycastHit2D platformHit = Physics2D.Raycast((Vector2)transform.position, Vector2.down, 1, layerPlatform);
+        if (platformHit.collider != null)
+        {
+            if (platformHit.collider.CompareTag("Special Platform"))
+            {
+                platformHit.collider.gameObject.GetComponent<SpecialPlatform>().OnActivate();
+            }
         }
     }
 }

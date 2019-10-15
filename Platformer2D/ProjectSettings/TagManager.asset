@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wall
+  - Platform Desactivable
+  - Special Platform
   layers:
   - Default
   - TransparentFX
