@@ -33,6 +33,11 @@ public class PlayerController : MonoBehaviour
     Material playerMaterial;
     [SerializeField]
     private Color doubleJumpUsedColor;
+
+    [SerializeField]
+    GameObject particule;
+    bool wasGroundedLastFrame;
+    float jumpTime;
     
 
     [Space]
@@ -188,6 +193,8 @@ public class PlayerController : MonoBehaviour
     {
         hits = Physics2D.OverlapBoxAll(transform.position, boxCollider.size, 0);
 
+        wasGroundedLastFrame = isGrounded;
+
         isGrounded = false;
 
         foreach (Collider2D hit in hits)
@@ -204,6 +211,11 @@ public class PlayerController : MonoBehaviour
                 {
                     isGrounded = true;
                     doubleJumpUsed = false;
+
+                    if (isGrounded && !wasGroundedLastFrame && jumpTime > .5f)
+                    {
+                        Instantiate(particule, transform.position, Quaternion.identity);
+                    }
                 }
 
                 if (hit.gameObject.CompareTag("Wall"))
@@ -213,6 +225,15 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+
+        if (!isGrounded)
+        {
+            jumpTime += Time.deltaTime;
+        } else
+        {
+            jumpTime = 0;
+        }
+
 
         // On regarde si on touche les murs sur le côté
         RaycastHit2D wallHit = Physics2D.Raycast((Vector2)transform.position - boxCollider.size / 2, Vector2.left, 1f, layerPlatform);
