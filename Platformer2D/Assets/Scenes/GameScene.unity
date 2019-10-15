@@ -590,6 +590,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   gravity: 35
+  doubleJumpUsedColor: {r: 0.12335351, g: 0.7924528, b: 0.24459879, a: 1}
   walkSpeed: 10
   walkAcceleration: 50
   runSpeed: 15

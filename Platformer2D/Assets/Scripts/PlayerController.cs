@@ -26,9 +26,14 @@ public class PlayerController : MonoBehaviour
     BoxCollider2D boxCollider;
     Vector2 velocity;
     Collider2D[] hits;
-  
 
-
+    [Space]
+    [Header("Element Visuel")]
+    private Color basicColor;
+    Material playerMaterial;
+    [SerializeField]
+    private Color doubleJumpUsedColor;
+    
 
     [Space]
     [Header("Mouvement")]
@@ -63,6 +68,8 @@ public class PlayerController : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider2D>();
         Debug.Assert(boxCollider != null, "Le joueur doit posséder une box de collision");
+        basicColor = GetComponent<Renderer>().material.color;
+        playerMaterial = GetComponent<Renderer>().material;
     }
 
     private void Update()
@@ -70,6 +77,14 @@ public class PlayerController : MonoBehaviour
         ComputeMovment();
         transform.Translate(velocity * Time.deltaTime);
         ComputeCollisions();
+        if (doubleJumpUsed)
+        {
+           playerMaterial.color = doubleJumpUsedColor;
+        }
+        else
+        {
+           playerMaterial.color = basicColor;
+        }
     }
 
     void ComputeMovment()
