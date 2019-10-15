@@ -66,7 +66,22 @@ public class PlayerController : MonoBehaviour
     float wallJumpXFactor;
     [SerializeField]
     float wallJumpYFactor;
-   
+
+    [Space]
+    [Header("Son")]
+    [SerializeField]
+    AudioSource source;
+    [SerializeField]
+    AudioClip punchSound;
+    [SerializeField]
+    AudioClip jumpSound;
+
+    [Space]
+    [Header("Animation")]
+    [SerializeField]
+    Animator animator;
+
+
 
   
     private void Start()
@@ -75,6 +90,8 @@ public class PlayerController : MonoBehaviour
         Debug.Assert(boxCollider != null, "Le joueur doit posséder une box de collision");
         basicColor = GetComponent<Renderer>().material.color;
         playerMaterial = GetComponent<Renderer>().material;
+
+        animator.SetBool("hasFallen", false);
     }
 
     private void Update()
@@ -111,6 +128,7 @@ public class PlayerController : MonoBehaviour
             velocity.y = 0;
             jaiCognerLaTete = false;
             isWallJumping = false;
+            animator.SetBool("hasFallen", false);
 
             if (Input.GetButtonDown("Jump") || wantToJump)
             {
@@ -132,7 +150,7 @@ public class PlayerController : MonoBehaviour
             //Want to jump but isnt grounded, allow a bit of time to jump a bit after.
             else if (Input.GetButtonDown("Jump") && doubleJumpUsed)
             {
-                RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position - boxCollider.size / 2, -Vector2.up, jumpDistanceTolerance, layerPlatform);
+                RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position , -Vector2.up, jumpDistanceTolerance, layerPlatform);
                 if (hit.collider != null)
                 {
                     wantToJump = true;
@@ -170,6 +188,9 @@ public class PlayerController : MonoBehaviour
     //precondition le joueur a appuyé sur Jump et isGrounded
     void Jump()
     {
+        source.clip = jumpSound;
+        source.Play();
+
         velocity.y = jumpForce;
     }
 
@@ -177,6 +198,8 @@ public class PlayerController : MonoBehaviour
 
     void WallJump()
     {
+        source.clip = jumpSound;
+        source.Play();
 
         if (contactWithLeftWall) // Quand on wall jump, c'est forcément sur le côté, sinon, on pourrait monter à l'infini    
         {
@@ -188,6 +211,7 @@ public class PlayerController : MonoBehaviour
             velocity.y = jumpForce * wallJumpYFactor;
             velocity.x = -speed * wallJumpXFactor;
         }
+
     }
 
 
@@ -219,6 +243,11 @@ public class PlayerController : MonoBehaviour
                     if (isGrounded && !wasGroundedLastFrame && jumpTime > .5f)
                     {
                         Instantiate(particule, transform.position, Quaternion.identity);
+                        source.clip = punchSound;
+                        source.Play();
+                        
+                        animator.SetBool("hasFallen", true);
+
                     }
                 }
 
