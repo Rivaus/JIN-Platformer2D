@@ -2037,7 +2037,7 @@ MonoBehaviour:
   airSpeed: 5
   airAcceleration: 30
   jumpForce: 16
-  jumpDistanceTolerance: 0.9
+  jumpDistanceTolerance: 1
   wallJumpXFactor: 2.5
   wallJumpYFactor: 1
   runJumpXFactor: 1.2

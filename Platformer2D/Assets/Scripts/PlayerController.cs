@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-   
+
     // Variable d'états
     private float speed;
     private float acceleration;
@@ -199,8 +199,6 @@ public class PlayerController : MonoBehaviour
         
         float moveInput = Input.GetAxisRaw("Horizontal");
         velocity.x = Mathf.MoveTowards(velocity.x, speed * moveInput, acceleration * Time.deltaTime);
-        Debug.Log(wantToJump);
-
     }
 
     //precondition le joueur a appuyé sur Jump et isGrounded
@@ -266,10 +264,16 @@ public class PlayerController : MonoBehaviour
 
                     if (isGrounded && !wasGroundedLastFrame && jumpTime > .5f)
                     {
+                        // EN cas de chute haute :
+
+                        //Spawn de particule
                         Instantiate(particule, transform.position, Quaternion.identity);
+
+                        //Son joué
                         source.clip = punchSound;
                         source.Play();
                         
+                        //Animation jouée
                         animator.SetBool("hasFallen", true);
 
                     }
@@ -294,7 +298,7 @@ public class PlayerController : MonoBehaviour
 
 
         // On regarde si on touche les murs sur le côté
-        RaycastHit2D wallHit = Physics2D.Raycast((Vector2)transform.position - boxCollider.size / 2, Vector2.left, 1f, layerPlatform);
+        RaycastHit2D wallHit = Physics2D.Raycast((Vector2)transform.position - boxCollider.size / 2, Vector2.left, .1f, layerPlatform);
         if (wallHit.collider != null)
         {
             contactWithLeftWall = true;
@@ -302,7 +306,7 @@ public class PlayerController : MonoBehaviour
         {
             contactWithLeftWall = false;
         }
-        wallHit = Physics2D.Raycast((Vector2)transform.position + boxCollider.size / 2, Vector2.right, 1f, layerPlatform);
+        wallHit = Physics2D.Raycast((Vector2)transform.position + boxCollider.size / 2, Vector2.right, .1f, layerPlatform);
         if (wallHit.collider != null)
         {
             contactWithRightWall = true;
