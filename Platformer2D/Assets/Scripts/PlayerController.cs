@@ -331,7 +331,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Laser"))
+        if (other.gameObject.CompareTag("RunningZone"))
         {
             canRun = !canRun;
         }

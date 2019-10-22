@@ -7,6 +7,7 @@ TagManager:
   - Wall
   - Platform Desactivable
   - Special Platform
+  - Laser
   layers:
   - Default
   - TransparentFX
