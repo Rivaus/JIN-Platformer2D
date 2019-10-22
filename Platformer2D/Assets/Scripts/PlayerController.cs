@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     private bool contactWithLeftWall = false;
     private bool jaiCognerLaTete = false;
     private bool isRunning = false;
-
+    private bool canRun = false;
 
     [Header("Collision et gravité")]
     [SerializeField]
@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour
     void ComputeMovment()
     {
         //Gestion de la vitesse en fonction de l'état
-        if (Input.GetAxisRaw("Run") > 0)
+        if ((Input.GetAxisRaw("Run") > 0)&&(canRun))
         {
             if(velocity.x != 0)
             {
@@ -257,6 +257,7 @@ public class PlayerController : MonoBehaviour
             {
                 transform.Translate(colliderDistance.pointA - colliderDistance.pointB);
                
+                //si on touche le sol
                 if(Vector2.Angle(colliderDistance.normal, Vector2.up) < 90)
                 {
                     isGrounded = true;
@@ -278,7 +279,7 @@ public class PlayerController : MonoBehaviour
 
                     }
                 }
-
+                //Si on touche un mur
                 if (hit.gameObject.CompareTag("Wall"))
                 {
                     isWallJumping = true;
@@ -327,5 +328,14 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("RunningZone"))
+        {
+            canRun = !canRun;
+        }
+    }
+
 }
 
