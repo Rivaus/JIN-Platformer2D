@@ -2040,6 +2040,8 @@ MonoBehaviour:
   jumpDistanceTolerance: 0.9
   wallJumpXFactor: 2.5
   wallJumpYFactor: 1
+  runJumpXFactor: 1.2
+  runJumpYFactor: 1.05
   source: {fileID: 1373579209}
   punchSound: {fileID: 8300000, guid: 91f46f56f1b09e14c8c85c27c1f7750a, type: 3}
   jumpSound: {fileID: 8300000, guid: 89026d5a7ab77a3479abbad852e52365, type: 3}

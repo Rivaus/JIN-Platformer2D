@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private bool contactWithRightWall = false;
     private bool contactWithLeftWall = false;
     private bool jaiCognerLaTete = false;
+    private bool isRunning = false;
 
 
     [Header("Collision et gravité")]
@@ -66,6 +67,10 @@ public class PlayerController : MonoBehaviour
     float wallJumpXFactor;
     [SerializeField]
     float wallJumpYFactor;
+    [SerializeField]
+    float runJumpXFactor;
+    [SerializeField]
+    float runJumpYFactor;
 
     [Space]
     [Header("Son")]
@@ -114,11 +119,14 @@ public class PlayerController : MonoBehaviour
         //Gestion de la vitesse en fonction de l'état
         if (Input.GetAxisRaw("Run") > 0)
         {
+            if(velocity.x != 0) { isRunning = true; }
+            else { isRunning = false; }
             speed = runSpeed;
             acceleration = runAcceleration;
         }
         else
         {
+            isRunning = false;
             speed = walkSpeed;
             acceleration = walkAcceleration;
         }
@@ -190,8 +198,15 @@ public class PlayerController : MonoBehaviour
     {
         source.clip = jumpSound;
         source.Play();
-
-        velocity.y = jumpForce;
+        if(isRunning)
+        {
+            Debug.Log("Yo les meufs !");
+            velocity.y = jumpForce * runJumpYFactor;
+            velocity.x = velocity.x * runJumpXFactor;
+        }else {
+            velocity.y = jumpForce;
+        }
+        
     }
 
 
