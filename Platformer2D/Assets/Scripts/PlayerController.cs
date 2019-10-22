@@ -19,10 +19,9 @@ public class PlayerController : MonoBehaviour
     private bool canRun = false;
 
     [Header("Collision et gravité")]
-    [SerializeField]
-    private LayerMask layerPlatform;
-    [SerializeField]
-    float gravity;
+    
+    public LayerMask layerPlatform;
+    public float gravity;
 
     BoxCollider2D boxCollider;
     Vector2 velocity;
@@ -43,24 +42,17 @@ public class PlayerController : MonoBehaviour
 
     [Space]
     [Header("Mouvement")]
-    [SerializeField]
-    float walkSpeed;
-    [SerializeField]
-    float walkAcceleration;
+    public float walkSpeed;
+    public float walkAcceleration;
 
-    [SerializeField]
-    float runSpeed;
-    [SerializeField]
-    float runAcceleration;
+    public float runSpeed;
+    public float runAcceleration;
 
-    [SerializeField]
-    float airSpeed;
-    [SerializeField]
-    float airAcceleration;
+    public float airSpeed;
+    public float airAcceleration;
 
     [Header("Saut")]
-    [SerializeField]
-    float jumpForce;
+    public float jumpForce;
     [SerializeField]
     float jumpDistanceTolerance;
     [SerializeField]
