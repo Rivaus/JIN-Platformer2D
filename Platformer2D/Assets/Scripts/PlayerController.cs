@@ -119,8 +119,14 @@ public class PlayerController : MonoBehaviour
         //Gestion de la vitesse en fonction de l'état
         if (Input.GetAxisRaw("Run") > 0)
         {
-            if(velocity.x != 0) { isRunning = true; }
-            else { isRunning = false; }
+            if(velocity.x != 0)
+            {
+                isRunning = true;
+            }
+            else {
+                isRunning = false;
+            }
+
             speed = runSpeed;
             acceleration = runAcceleration;
         }
@@ -150,25 +156,27 @@ public class PlayerController : MonoBehaviour
             
             velocity.y += - gravity * Time.deltaTime;
 
-            if (Input.GetButtonDown("Jump") && isWallJumping)
+            if (Input.GetButtonDown("Jump"))
             {
-                WallJump();
-                isWallJumping = false;
-            }
-            //Want to jump but isnt grounded, allow a bit of time to jump a bit after.
-            else if (Input.GetButtonDown("Jump") && doubleJumpUsed)
-            {
-                RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position , -Vector2.up, jumpDistanceTolerance, layerPlatform);
-                if (hit.collider != null)
+                if (isWallJumping)
                 {
-                    wantToJump = true;
+                    WallJump();
+                    isWallJumping = false;
+                } else
+                {
+                    RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position, -Vector2.up, jumpDistanceTolerance, layerPlatform);
+                    if (hit.collider != null)
+                    {
+                        wantToJump = true;
+                    }
+
+                    if (!doubleJumpUsed && !wantToJump)
+                    {
+                        Jump();
+                        doubleJumpUsed = true;
+                        isWallJumping = false;
+                    }
                 }
-            } // Double jump
-            else if (Input.GetButtonDown("Jump") && !doubleJumpUsed && !wantToJump)
-            {
-                Jump();
-                doubleJumpUsed = true;
-                isWallJumping = false;
             }
         }
 
@@ -191,6 +199,8 @@ public class PlayerController : MonoBehaviour
         
         float moveInput = Input.GetAxisRaw("Horizontal");
         velocity.x = Mathf.MoveTowards(velocity.x, speed * moveInput, acceleration * Time.deltaTime);
+        Debug.Log(wantToJump);
+
     }
 
     //precondition le joueur a appuyé sur Jump et isGrounded
@@ -200,7 +210,6 @@ public class PlayerController : MonoBehaviour
         source.Play();
         if(isRunning)
         {
-            Debug.Log("Yo les meufs !");
             velocity.y = jumpForce * runJumpYFactor;
             velocity.x = velocity.x * runJumpXFactor;
         }else {
