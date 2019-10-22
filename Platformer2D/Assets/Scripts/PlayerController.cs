@@ -241,7 +241,7 @@ public class PlayerController : MonoBehaviour
     void ComputeCollisions()
     {
         hits = Physics2D.OverlapBoxAll(transform.position, boxCollider.size, 0);
-
+        canRun = false;
         wasGroundedLastFrame = isGrounded;
 
         isGrounded = false;
@@ -255,35 +255,45 @@ public class PlayerController : MonoBehaviour
 
             if (colliderDistance.isOverlapped)
             {
-                transform.Translate(colliderDistance.pointA - colliderDistance.pointB);
-               
-                //si on touche le sol
-                if(Vector2.Angle(colliderDistance.normal, Vector2.up) < 90)
+                if (!hit.isTrigger)
                 {
-                    isGrounded = true;
-                    doubleJumpUsed = false;
+                    transform.Translate(colliderDistance.pointA - colliderDistance.pointB);
 
-                    if (isGrounded && !wasGroundedLastFrame && jumpTime > .5f)
+                    //si on touche le sol
+                    if (Vector2.Angle(colliderDistance.normal, Vector2.up) < 90)
                     {
-                        // EN cas de chute haute :
+                        isGrounded = true;
+                        doubleJumpUsed = false;
 
-                        //Spawn de particule
-                        Instantiate(particule, transform.position, Quaternion.identity);
+                        if (isGrounded && !wasGroundedLastFrame && jumpTime > .5f)
+                        {
+                            // EN cas de chute haute :
 
-                        //Son joué
-                        source.clip = punchSound;
-                        source.Play();
-                        
-                        //Animation jouée
-                        animator.SetBool("hasFallen", true);
+                            //Spawn de particule
+                            Instantiate(particule, transform.position, Quaternion.identity);
 
+                            //Son joué
+                            source.clip = punchSound;
+                            source.Play();
+
+                            //Animation jouée
+                            animator.SetBool("hasFallen", true);
+
+                        }
+                    }
+                    //Si on touche un mur
+                    if (hit.gameObject.CompareTag("Wall"))
+                    {
+                        isWallJumping = true;
+                        velocity.x = 0;
                     }
                 }
-                //Si on touche un mur
-                if (hit.gameObject.CompareTag("Wall"))
+                else
                 {
-                    isWallJumping = true;
-                    velocity.x = 0;
+                    if (hit.gameObject.CompareTag("RunningZone"))
+                    {
+                        canRun = true;
+                    }
                 }
             }
         }
@@ -330,6 +340,14 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("RunningZone"))
+        {
+            canRun = !canRun;
+            Debug.Log("canRun = " + canRun);
+        }
+    }
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("RunningZone"))
         {
