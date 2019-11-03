@@ -79,7 +79,6 @@ public class PlayerController : MonoBehaviour
     Animator animator;
 
 
-
   
     private void Start()
     {

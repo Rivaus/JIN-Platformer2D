@@ -6,6 +6,8 @@ using TMPro;
 
 public class MenuControllerPlayerManager : MonoBehaviour
 {
+    [SerializeField]
+    GameObject UImodif;
 
     [SerializeField]
     PlayerController player;
@@ -28,7 +30,19 @@ public class MenuControllerPlayerManager : MonoBehaviour
     [SerializeField]
     private  TMP_InputField airAcceleration;
 
-   
+    private void Awake()
+    {
+        gravity.onValueChanged.AddListener((value) => SetGravity(float.Parse(value)));
+
+        walkSpeed.onValueChanged.AddListener((value) => SetWalkSpeed(float.Parse(value)));
+        walkAcceleration.onValueChanged.AddListener((value) => SetWalkAcceleration(float.Parse(value)));
+
+        runSpeed.onValueChanged.AddListener((value) => SetRunSpeed(float.Parse(value)));
+        runAcceleration.onValueChanged.AddListener((value) => SetRunAcceleration(float.Parse(value)));
+
+        airSpeed.onValueChanged.AddListener((value) => SetAirSpeed(float.Parse(value)));
+        airAcceleration.onValueChanged.AddListener((value) => SetAirAcceleration(float.Parse(value)));
+    }
 
     private void Start()
     {
@@ -44,8 +58,70 @@ public class MenuControllerPlayerManager : MonoBehaviour
         airAcceleration.text = player.airAcceleration.ToString();
     }
 
-    public void OnGravityChanged(float gravity)
+    private void Update()
+    {
+        if (Input.GetButtonDown("Start"))
+        {
+            UImodif.SetActive(!UImodif.active);
+        }
+    }
+
+    public void Reset()
+    {
+        player.gravity = 35;
+        player.runSpeed = 20;
+        player.runAcceleration = 60;
+
+        player.walkSpeed = 10;
+        player.walkAcceleration = 50;
+
+        player.airSpeed = 5;
+        player.airAcceleration = 30;
+
+        gravity.text = "35";
+
+        walkSpeed.text = "10";
+        walkAcceleration.text = "50";
+
+        runSpeed.text = "20";
+        runAcceleration.text = "60";
+
+        airSpeed.text = "5";
+        airAcceleration.text = "30";
+    }
+
+    public void SetGravity(float gravity)
     {
         player.gravity = gravity;
+    }
+
+    public void SetWalkSpeed(float speed)
+    {
+        player.walkSpeed = speed;
+    }
+
+    public void SetWalkAcceleration(float acc)
+    {
+        player.walkAcceleration = acc;
+    }
+
+    public void SetAirSpeed(float speed)
+    {
+        player.airSpeed = speed;
+    }
+
+    public void SetAirAcceleration(float acc)
+    {
+        player.airAcceleration = acc;
+    }
+
+    public void SetRunSpeed(float speed)
+    {
+        player.walkSpeed = speed;
+    }
+
+    public void SetRunAcceleration(float acc)
+    {
+        player.walkAcceleration = acc;
     }
 }
