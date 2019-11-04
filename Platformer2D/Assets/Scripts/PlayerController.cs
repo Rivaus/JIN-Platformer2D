@@ -256,12 +256,13 @@ public class PlayerController : MonoBehaviour
                         isGrounded = true;
                         doubleJumpUsed = false;
 
-                        if (isGrounded && !wasGroundedLastFrame && jumpTime > .5f)
+                        if (isGrounded && !wasGroundedLastFrame && jumpTime > .1f)
                         {
                             // EN cas de chute haute :
 
                             //Spawn de particule
                             Instantiate(particule, transform.position, Quaternion.identity);
+                            Debug.Log("particule !");
 
                             //Son joué
                             source.clip = punchSound;
