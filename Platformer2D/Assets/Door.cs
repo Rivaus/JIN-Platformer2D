@@ -11,7 +11,6 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Pomme");
         if (collision.CompareTag("Player"))
         {
             SceneManager.LoadScene(levelName, LoadSceneMode.Single);

@@ -262,7 +262,6 @@ public class PlayerController : MonoBehaviour
 
                             //Spawn de particule
                             Instantiate(particule, transform.position, Quaternion.identity);
-                            Debug.Log("particule !");
 
                             //Son joué
                             source.clip = punchSound;
@@ -336,7 +335,6 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("RunningZone"))
         {
             canRun = !canRun;
-            Debug.Log("canRun = " + canRun);
         }
     }
 
