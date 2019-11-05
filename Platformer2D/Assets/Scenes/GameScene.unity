@@ -827,7 +827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0, g: 0, b: 0, a: 1}
   disableColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0.53333336}
-  activeTime: 0.3
+  activeTime: 0.7
   resetTime: 2
   playerLayer:
     serializedVersion: 2
@@ -1077,7 +1077,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0, g: 0, b: 0, a: 1}
   disableColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0.53333336}
-  activeTime: 0.3
+  activeTime: 0.7
   resetTime: 2
   playerLayer:
     serializedVersion: 2
@@ -1615,7 +1615,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0, g: 0, b: 0, a: 1}
   disableColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0.53333336}
-  activeTime: 0.3
+  activeTime: 0.7
   resetTime: 2
   playerLayer:
     serializedVersion: 2
@@ -1740,7 +1740,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0, g: 0, b: 0, a: 1}
   disableColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0.53333336}
-  activeTime: 0.3
+  activeTime: 0.7
   resetTime: 2
   playerLayer:
     serializedVersion: 2
