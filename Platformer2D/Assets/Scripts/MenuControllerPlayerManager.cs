@@ -68,7 +68,7 @@ public class MenuControllerPlayerManager : MonoBehaviour
 
     public void Reset()
     {
-        player.gravity = 35;
+        player.gravity = 65;
         player.runSpeed = 20;
         player.runAcceleration = 60;
 
@@ -78,7 +78,7 @@ public class MenuControllerPlayerManager : MonoBehaviour
         player.airSpeed = 5;
         player.airAcceleration = 30;
 
-        gravity.text = "35";
+        gravity.text = "65";
 
         walkSpeed.text = "10";
         walkAcceleration.text = "50";
