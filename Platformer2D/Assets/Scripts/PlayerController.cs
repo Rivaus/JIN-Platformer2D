@@ -331,17 +331,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.gameObject.CompareTag("RunningZone"))
+        if (collision.gameObject.CompareTag("RunningZone"))
         {
             canRun = !canRun;
             Debug.Log("canRun = " + canRun);
         }
     }
-    private void OnTriggerExit(Collider other)
+
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (other.gameObject.CompareTag("RunningZone"))
+
+        if (collision.gameObject.CompareTag("RunningZone"))
         {
             canRun = !canRun;
         }
